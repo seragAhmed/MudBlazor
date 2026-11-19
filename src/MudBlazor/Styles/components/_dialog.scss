@@ -36,25 +36,25 @@
     padding-left: 32px;
   }
 
-  &.mud-dialog-topleft .mud-dialog {
+  &.mud-dialog-topleft > .mud-dialog {
     position: absolute;
     top: 32px;
     left: 32px;
   }
 
-  &.mud-dialog-topright .mud-dialog {
+  &.mud-dialog-topright > .mud-dialog {
     position: absolute;
     top: 32px;
     right: 32px;
   }
 
-  &.mud-dialog-bottomleft .mud-dialog {
+  &.mud-dialog-bottomleft > .mud-dialog {
     position: absolute;
     bottom: 32px;
     left: 32px;
   }
 
-  &.mud-dialog-bottomright .mud-dialog {
+  &.mud-dialog-bottomright > .mud-dialog {
     position: absolute;
     bottom: 32px;
     right: 32px;
@@ -63,13 +63,16 @@
 
 .mud-dialog {
   display: flex;
+  // Anchors absolutely positioned children such as the close button (#14205) now that no transform is kept.
+  position: relative;
   z-index: calc(var(--mud-zindex-dialog) + 2);
   flex-direction: column;
   color: var(--mud-palette-text-primary);
   background-color: var(--mud-palette-surface);
   border-radius: var(--mud-default-borderradius);
-  -webkit-animation: mud-open-dialog-center 0.1s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
-  animation: mud-open-dialog-center 0.1s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+  // backwards, not both: a transform kept after the animation would make the dialog the containing block of position: fixed descendants and clip a PickerVariant.Dialog picker opened inside it (#11851).
+  -webkit-animation: mud-open-dialog-center 0.1s cubic-bezier(0.390, 0.575, 0.565, 1.000) backwards;
+  animation: mud-open-dialog-center 0.1s cubic-bezier(0.390, 0.575, 0.565, 1.000) backwards;
   box-shadow: 0px 11px 15px -7px rgba(0,0,0,0.2), 0px 24px 38px 3px rgba(0,0,0,0.14), 0px 9px 46px 8px rgba(0,0,0,0.12);
   max-height: calc(100vh - var(--mud-appbar-height)); // keep as fallback
   max-height: calc(100dvh - var(--mud-appbar-height));
